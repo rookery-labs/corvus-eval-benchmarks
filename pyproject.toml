@@ -1,0 +1,26 @@
+[project]
+name = "corvus-eval-benchmarks"
+version = "0.1.0"
+description = "Evaluation benchmarks, DOM datasets, Expected Calibration Error (ECE) metric, and INT8 calibration pipeline for Corvus"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Rookery Labs" }]
+dependencies = [
+    "numpy>=1.26.0",
+    "scikit-learn>=1.4.0",
+    "onnx>=1.16.0",
+    "onnxruntime>=1.18.0",
+    "torch>=2.2.0",
+    "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "-v"
