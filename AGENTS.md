@@ -20,5 +20,13 @@ This repository encapsulates the continuous evaluation, metrology, dataset curat
    - Validate exported ONNX graphs with `onnx.checker` and run inference validation sessions.
 3. **Trace Datasets (`specs/dataset-format.md`):**
    - Store navigation traces in JSONL format with structured `expected_action` and `candidates`.
-4. **Testing Protocol:**
-   - Run `pytest` within `.venv` before every commit.
+4. **Branch & Worktree Isolation (Sanctuary of `main`):**
+   - Strictly prohibit direct commits or pushes on `main`.
+   - All work must be conducted in dedicated branches (`feat/...`, `fix/...`) within an isolated worktree (`just worktree-add`).
+   - Merge only when `pytest`, `ruff check .`, and `ruff format --check .` are 100% green.
+5. **Renovate Automated Dependencies & Zero-Touch Release:**
+   - Automated dependency PRs (patch/minor) merge automatically to `main` upon passing all Pytest tests and Ruff linters.
+   - Merges to `main` automatically publish a new semantic release and tag.
+6. **Testing Protocol:**
+   - Run `pytest`, `ruff check .`, and `ruff format --check .` before every commit.
+
