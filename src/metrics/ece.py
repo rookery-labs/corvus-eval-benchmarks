@@ -1,21 +1,21 @@
 import numpy as np
-from typing import Tuple, Dict
+
 
 def compute_ece(
     confidences: np.ndarray,
     predictions: np.ndarray,
     ground_truth: np.ndarray,
     n_bins: int = 10,
-) -> Tuple[float, float, Dict[str, np.ndarray]]:
+) -> tuple[float, float, dict[str, np.ndarray]]:
     """
     Computes Expected Calibration Error (ECE) and Maximum Calibration Error (MCE).
-    
+
     Args:
         confidences: (N,) array of maximum prediction probabilities in [0, 1]
         predictions: (N,) array of predicted class indices
         ground_truth: (N,) array of true class labels
         n_bins: number of confidence bins (default 10)
-        
+
     Returns:
         (ece, mce, bin_stats)
     """
@@ -23,7 +23,9 @@ def compute_ece(
     predictions = np.asarray(predictions, dtype=np.int64)
     ground_truth = np.asarray(ground_truth, dtype=np.int64)
 
-    assert len(confidences) == len(predictions) == len(ground_truth), "Array lengths must match"
+    assert len(confidences) == len(predictions) == len(ground_truth), (
+        "Array lengths must match"
+    )
 
     n_samples = len(confidences)
     if n_samples == 0:

@@ -1,6 +1,7 @@
 import numpy as np
-import pytest
-from src.metrics.ece import compute_ece, apply_temperature_scaling, optimize_temperature
+
+from src.metrics.ece import apply_temperature_scaling, compute_ece, optimize_temperature
+
 
 def test_perfectly_calibrated_predictions():
     # 100 samples with 0.8 confidence and 80% accuracy
@@ -12,10 +13,11 @@ def test_perfectly_calibrated_predictions():
     ground_truth = np.zeros(n, dtype=int)
     predictions = np.where(correct_mask, 0, 1)
 
-    ece, mce, stats = compute_ece(confidences, predictions, ground_truth, n_bins=10)
+    ece, mce, _stats = compute_ece(confidences, predictions, ground_truth, n_bins=10)
     # ECE should be very close to 0 (|0.85 - 0.85| approx 0)
     assert ece < 0.05
     assert mce < 0.05
+
 
 def test_overconfident_uncalibrated_model():
     n = 500
@@ -28,6 +30,7 @@ def test_overconfident_uncalibrated_model():
     # ECE must capture the large calibration gap (~0.49)
     assert ece > 0.40
     assert mce > 0.40
+
 
 def test_temperature_optimization_calibration_improvement():
     np.random.seed(1337)

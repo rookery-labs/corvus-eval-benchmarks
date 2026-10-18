@@ -1,13 +1,12 @@
-import os
-from typing import List, Dict
 import numpy as np
 import onnx
 from onnxruntime.quantization import (
-    quantize_static,
     CalibrationDataReader,
-    QuantType,
     QuantFormat,
+    QuantType,
+    quantize_static,
 )
+
 
 class SyntheticCalibrationDataReader(CalibrationDataReader):
     def __init__(self, input_name: str, input_shape: tuple, num_samples: int = 20):
@@ -16,7 +15,7 @@ class SyntheticCalibrationDataReader(CalibrationDataReader):
         self.num_samples = num_samples
         self.current = 0
 
-    def get_next(self) -> Dict[str, np.ndarray]:
+    def get_next(self) -> dict[str, np.ndarray]:
         if self.current >= self.num_samples:
             return None
         self.current += 1

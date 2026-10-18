@@ -24,3 +24,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 pythonpath = ["."]
 addopts = "-v"
+
+[tool.ruff.lint]
+extend-ignore = ["EXE002"]
+

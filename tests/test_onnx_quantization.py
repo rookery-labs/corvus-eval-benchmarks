@@ -1,17 +1,17 @@
 import os
 import tempfile
+
 import numpy as np
-import pytest
-import torch
-import torch.nn as nn
-import onnx
 import onnxruntime as ort
+import torch
+from torch import nn
 
 from src.quantization.calibrate_int8 import (
+    SyntheticCalibrationDataReader,
     quantize_model_to_int8,
     validate_onnx_model,
-    SyntheticCalibrationDataReader,
 )
+
 
 class SimpleClassifier(nn.Module):
     def __init__(self):
@@ -37,6 +37,7 @@ def test_onnx_export_and_graph_validation():
             input_names=["input"],
             output_names=["output"],
             dynamic_axes={"input": {0: "batch"}, "output": {0: "batch"}},
+            dynamo=False,
         )
 
         assert os.path.exists(model_path)
@@ -65,9 +66,12 @@ def test_static_int8_quantization_pipeline():
             input_names=["input"],
             output_names=["output"],
             dynamic_axes={"input": {0: "batch"}, "output": {0: "batch"}},
+            dynamo=False,
         )
 
-        reader = SyntheticCalibrationDataReader(input_name="input", input_shape=(1, 16), num_samples=10)
+        reader = SyntheticCalibrationDataReader(
+            input_name="input", input_shape=(1, 16), num_samples=10
+        )
         quantize_model_to_int8(fp32_path, int8_path, reader)
 
         assert os.path.exists(int8_path)
